@@ -2,7 +2,8 @@ import { useEffect } from "react"
 import Header from "./components/Header/Header"
 import { useDispatch, useSelector } from "react-redux"
 import authService from "./nhost/auth.js"
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
+import {login, logout} from "./store/authSlice"
 
 function App() {
   const dispatch = useDispatch()
@@ -26,7 +27,7 @@ function App() {
   return (
     <div className="min-h-screen bg-black text-white ">
       <Header/>
-      <main className="min-h-screen md:text-md lg:text-lg xl:text-xl 2xl:text-5xl">
+      <main className="min-h-screen min-w-screen md:text-md lg:text-lg xl:text-xl 2xl:text-5xl">
           <Outlet />
       </main>
       

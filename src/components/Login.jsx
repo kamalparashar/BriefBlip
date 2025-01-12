@@ -37,11 +37,11 @@ function Login() {
   return (
     <div className="flex justify-center items-center m-8">
       <div
-        className={`mx-auto w-full max-w-lg rounded-xl px-10 pt-4 pb-8 border border-gray-600  shadow-gray-600 shadow-md sm:max-w-80`}
+        className={`mx-auto rounded-xl px-10 py-6 border border-gray-600  shadow-gray-600 shadow-md max-w-80 md:max-w-md lg:max-w-lg xl:max-w-xl`}
       >
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-2/3">
-            <Logo />
+          <span className="inline-block">
+            <Logo className=" w-[7vmax] flex justify-center items-center object-contain"/>
           </span>
         </div>
         
@@ -53,7 +53,7 @@ function Login() {
           Don&apos;t have any account?&nbsp;
           <Link
             to="/signup"
-            className="font-medium text-primary transition-all  text-blue-400 duration-200 hover:underline"
+            className="font-medium text-primary transition-all text-blue-400 duration-200 hover:underline"
           >
             Sign Up
           </Link>
@@ -84,7 +84,7 @@ function Login() {
               {...register("password", {
                 required: true,
               })}
-              className="rounded-md "
+              className="rounded-md mb-4"
             />
             <Button 
               type="submit" 
@@ -93,7 +93,6 @@ function Login() {
               children="Login" />
           </div>
         </form>
-
       </div>
     </div>
   );

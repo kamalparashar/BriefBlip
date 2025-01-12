@@ -4,20 +4,21 @@ import conf from "../conf/conf"
 import Modal from "./Modal"
 import { useTrialUsage } from "./Hooks/useTrialUsage"
 import TrialBanner from "./TrialBanner"
+import { useSelector } from "react-redux"
 import axios from "axios"
 
-function Summary({ session }) {
+function Summary() {
+  const user = useSelector(state => state.auth.status)
   const [url, setUrl] = useState("")
   const [showModal, setShowModal] = useState(false)
-  const [summary, setSummary] = useState()
+  const [summary, setSummary] = useState("unable to generate summary")
   const { hasTrialsLeft, remainingTrials, incrementTrialUsage } =
     useTrialUsage()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(url)
-    if (!session && !hasTrialsLeft) {
+    e.preventDefault()
+    if (!user && !hasTrialsLeft) {
       navigate("/login")
       return;
     }
@@ -26,10 +27,22 @@ function Summary({ session }) {
       console.log(response.data)
       setSummary(response.data.output.summary)
     } catch (error) {
-      console.error("Error triggering workflow:", error);
+      console.error("Error triggering workflow:", error.message); 
+      if (error.response) { 
+        // The request was made and the server responded with a status code // that falls out of the range of 2xx 
+        console.error("Server Response:", error.response.data); 
+        console.error("Status Code:", error.response.status); 
+        console.error("Headers:", error.response.headers); 
+      } 
+      else if (error.request) { // The request was made but no response was received 
+        console.error("Request Data:", error.request); 
+      } else { 
+        // Something happened in setting up the request that triggered an Error 
+        console.error("Error Message:", error.message); 
+      } 
+      console.error("Axios Config:", error.config);
     }
-
-    if (!session) {
+    if (!user) {
       incrementTrialUsage();
     }
     setShowModal(true);
@@ -37,7 +50,7 @@ function Summary({ session }) {
 
   return (
     <>
-      {!session && <TrialBanner remainingTrials={remainingTrials} />}
+      {!user && <TrialBanner remainingTrials={remainingTrials} />}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8">
           Get Video Summary
@@ -66,11 +79,9 @@ function Summary({ session }) {
             type="submit"
             className="w-full py-2 px-4 rounded-md transition-colors bg-blue-500 hover:bg-blue-600 text-white"
           >
-            {session
+            {user
               ? "Generate Summary"
-              : hasTrialsLeft
-              ? "Try it Free"
-              : "Sign Up to Continue"}
+              : (hasTrialsLeft ? "Try it Free" : "Sign Up to Continue")}
           </button>
         </form>
 
@@ -80,7 +91,7 @@ function Summary({ session }) {
               Video Summary
             </h2>
             <div className="whitespace-pre-line text-gray-700">{summary}</div>
-            {!session && remainingTrials > 0 && (
+            {!user && remainingTrials > 0 && (
               <p className="mt-4 text-sm text-gray-500">
                 You have {remainingTrials} free{" "}
                 {remainingTrials === 1 ? "summary" : "summaries"} remaining

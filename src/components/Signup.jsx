@@ -16,10 +16,14 @@ function Signup() {
     setError("")
     try {
       const session = await authService.createAccount(data)
+      console.log(session)
       if (session) {
         const userData = await authService.getCurrentUser()
-        if (userData) dispatch(login(userData))
-          navigate("/")
+        if (userData){ 
+          dispatch(login(userData))
+          window.alert("verify your Email")
+        }
+        navigate("/")
       }
     } catch (error) {
       setError(error.message)
@@ -34,14 +38,13 @@ function Signup() {
   }
 
   return (
-    <div className="m-8">
+    <div className="flex justify-center items-center m-8">
       <div
-        className={`mx-auto w-full max-w-lg rounded-xl px-10 pt-4 pb-8 border border-gray-600 shadow-gray-600 shadow-md sm:max-w-80`}
+        className={`mx-auto rounded-xl px-10 py-6 border border-gray-600 shadow-gray-600 shadow-md max-w-80 md:max-w-md lg:max-w-lg xl:max-w-xl`}
       >
-
         <div className="mb-2 flex justify-center">
-          <span className="inline-block w-2/3">
-            <Logo />
+          <span className="inline-block">
+            <Logo className=" w-[7vmax] flex justify-center items-center object-contain"/>
           </span>
         </div>
         
@@ -73,7 +76,7 @@ function Signup() {
               />
             <Input
               label="Email: "
-              placeholder="Enter your Email"
+              placeholder="Enter your Valid Email"
               type="Email"
               {...register("email", {
                 required: true,
@@ -92,7 +95,7 @@ function Signup() {
               {...register("password", {
                 required: true,
               })}
-              className="rounded-md bg-white text-black focus:bg-gray-50"
+              className="rounded-md mb-4 bg-white text-black focus:bg-gray-50"
             />
             <Button 
               type="submit" 

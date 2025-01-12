@@ -1,3 +1,5 @@
+import nhost from "./nhost.js"
+
 export class AuthService {
   async createAccount({ username, email, password }) {
     try {
@@ -5,8 +7,8 @@ export class AuthService {
         email: email,
         password: password,
         options: {
-          userData: {
-            username: username, // Adding custom username field
+          metadata: {
+            displayName: username, // Adding custom username field
           },
         },
       });
@@ -57,7 +59,6 @@ export class AuthService {
   async getCurrentUser(){
     const user = nhost.auth.getUser()
     if (user) {
-      console.log('Current user:', user)
       const userData = {
         id: user.id,
         email: user.email,
