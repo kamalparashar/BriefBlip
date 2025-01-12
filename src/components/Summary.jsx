@@ -7,8 +7,7 @@ import axios from "axios";
 function Summary() {
   const user = useSelector((state) => state.auth.status);
   const [url, setUrl] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [summary, setSummary] = useState("unable to generate summary");
+  const [summary, setSummary] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -55,7 +54,8 @@ function Summary() {
             type="submit"
             className="w-full py-2 px-4 rounded-md transition-colors bg-blue-500 hover:bg-blue-600 text-white"
           >
-            {user ? "Generate Summary" : "Sign Up to Continue"}
+            Generate Summary
+            {/* {user ? "Generate Summary" : "Sign Up to Continue"} */}
           </button>
         </form>
         <div className="prose max-w-none">
