@@ -33,9 +33,6 @@ export class AuthService {
       if (error) {
         console.error("Sign in error:", error);
       } else {
-        console.log("Signed in user:", session.user);
-        console.log("Access token:", session.accessToken);
-        console.log("Refresh token:", session.refreshToken);
         return session;
       }
     } catch (error) {
