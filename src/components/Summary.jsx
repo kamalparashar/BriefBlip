@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import conf from "../conf/conf";
-import TrialBanner from "./TrialBanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -9,7 +8,7 @@ function Summary() {
   const user = useSelector((state) => state.auth.status);
   const [url, setUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [summary, setSummary] = useState("unable to generate summary")
+  const [summary, setSummary] = useState("unable to generate summary");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,19 +18,11 @@ function Summary() {
       return;
     }
     try {
-      const response = await fetch(conf.n8n_url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: {youtubeUrl:url},
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const responseData = await response.json();
-      console.log("Workflow triggered:", responseData);
+      const response = await axios.post(conf.n8n_url, {youtubeUrl:url})
       setSummary(response.data.output.summary)
+      console.log("Workflow triggered:", response.data);
     } catch (error) {
-      console.error("Error triggering workflow:", error.message);
+      console.error("Error triggering workflow:", error);
     }
   };
 
@@ -64,21 +55,15 @@ function Summary() {
             type="submit"
             className="w-full py-2 px-4 rounded-md transition-colors bg-blue-500 hover:bg-blue-600 text-white"
           >
-            {user
-              ? "Generate Summary"
-              : "Sign Up to Continue"}
+            {user ? "Generate Summary" : "Sign Up to Continue"}
           </button>
         </form>
-          <div className="prose max-w-none">
-            <h2 className="text-2xl font-bold mb-4 text-black">
-              Video Summary
-            </h2>
-            {summary?(
-              <div className="whitespace-pre-line text-gray-700">{summary}</div>
-            ):null
-            }
-            
-          </div>
+        <div className="prose max-w-none">
+          <h2 className="text-2xl font-bold mb-4 text-black">Video Summary</h2>
+          {summary ? (
+            <div className="whitespace-pre-line text-gray-700">{summary}</div>
+          ) : null}
+        </div>
       </div>
     </>
   );
