@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import conf from "../conf/conf";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import parse from "html-react-parser"
 
 function Summary() {
   const user = useSelector((state) => state.auth.status);
@@ -12,10 +13,10 @@ function Summary() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    // if (!user) {
+    //   navigate("/login");
+    //   return;
+    // }
     try {
       const response = await axios.post(conf.n8n_url, {youtubeUrl:url})
       setSummary(response.data.output.summary)
@@ -55,13 +56,12 @@ function Summary() {
             className="w-full py-2 px-4 rounded-md transition-colors bg-blue-500 hover:bg-blue-600 text-white"
           >
             Generate Summary
-            {/* {user ? "Generate Summary" : "Sign Up to Continue"} */}
           </button>
         </form>
-        <div className="prose max-w-none">
-          <h2 className="text-2xl font-bold mb-4 text-white">Video Summary</h2>
+        <div className="prose max-w-none p-4">
+          <h1 className="text-2xl font-bold mb-4 text-white">Video Summary</h1>
           {summary ? (
-            <div className="whitespace-pre-line text-white">{summary}</div>
+            <div className="whitespace-pre-line text-white">{parse(summary)}</div>
           ) : null}
         </div>
       </div>
