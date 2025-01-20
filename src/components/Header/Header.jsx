@@ -38,7 +38,7 @@ function Header() {
               <li key={item.path}>
                 <button
                 onClick={()=> navigate(item.path)}
-                className='text-xl font-semibold inline-block px-3 rounded-full sm:px-2 sm:text-base'
+                className='font-semibold inline-block rounded-full px-2 lg:px-3 xl:px-3 2xl:px-4 text-sm md:text-md lg:text-lg xl:text-xl 2xl:text-2xl'
                 >
                   <span className="whitespace-nowrap">{item.name}</span>
                 </button>

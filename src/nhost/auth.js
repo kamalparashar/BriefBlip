@@ -18,7 +18,7 @@ export class AuthService {
         return null;
       }
     } catch (error) {
-      console.log(error);
+      console.log("signup error: ", error);
       throw error;
     }
   }
@@ -36,6 +36,7 @@ export class AuthService {
         return session;
       }
     } catch (error) {
+      console.log("login error: ", error)
       throw error;
     }
   }
@@ -49,6 +50,7 @@ export class AuthService {
         console.log("Successfully signed out");
       }
     } catch (error) {
+      console.log("logout error: ", error)
       throw error;
     }
   }

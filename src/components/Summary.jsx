@@ -8,7 +8,7 @@ import parse from "html-react-parser"
 function Summary() {
   const user = useSelector((state) => state.auth.status);
   const [url, setUrl] = useState("");
-  const [summary, setSummary] = useState("");
+  const [data, setData] = useState({});
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,8 +18,9 @@ function Summary() {
     //   return;
     // }
     try {
+      setData([])
       const response = await axios.post(conf.n8n_url, {youtubeUrl:url})
-      setSummary(response.data.output.summary)
+      setData(response.data.output)
       console.log("Workflow triggered:", response.data);
     } catch (error) {
       console.error("Error triggering workflow:", error);
@@ -59,9 +60,10 @@ function Summary() {
           </button>
         </form>
         <div className="prose max-w-none p-4">
-          <h1 className="text-2xl font-bold mb-4 text-white">Video Summary</h1>
-          {summary ? (
-            <div className="whitespace-pre-line text-white">{parse(summary)}</div>
+          <h1 className="text-2xl font-bold mb-4 text-white text-center">{data.title}</h1>
+          <h2 className="text-xl font-bold mb-4 text-white">Video Summary</h2>
+          {data.summary ? (
+            <div className="whitespace-pre-line text-white">{parse(data.summary)}</div>
           ) : null}
         </div>
       </div>
