@@ -9,14 +9,16 @@ function Summary() {
   const user = useSelector((state) => state.auth.status);
   const [url, setUrl] = useState("");
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // if (!user) {
-    //   navigate("/login");
-    //   return;
-    // }
+    e.preventDefault()
+    setLoading(true)
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     try {
       setData([])
       const response = await axios.post(conf.n8n_url, {youtubeUrl:url})
@@ -24,6 +26,8 @@ function Summary() {
       console.log("Workflow triggered:", response.data);
     } catch (error) {
       console.error("Error triggering workflow:", error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -59,13 +63,15 @@ function Summary() {
             Generate Summary
           </button>
         </form>
+        {loading?(<div className="text-2xl font-bold text-center m-20">Loading...</div>):
         <div className="prose max-w-none p-4">
+          <h1 className="text-3xl font-bold mb-6 text-white">Video Summary :</h1>
           <h1 className="text-2xl font-bold mb-4 text-white text-center">{data.title}</h1>
-          <h2 className="text-xl font-bold mb-4 text-white">Video Summary</h2>
           {data.summary ? (
             <div className="whitespace-pre-line text-white">{parse(data.summary)}</div>
           ) : null}
         </div>
+        }
       </div>
     </>
   );

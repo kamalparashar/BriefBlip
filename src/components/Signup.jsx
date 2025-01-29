@@ -21,7 +21,7 @@ function Signup() {
         const userData = await authService.getCurrentUser()
         if (userData){ 
           dispatch(login(userData))
-          window.alert("verify your Email")
+          window.alert("verify your Email.")
         }
         navigate("/")
       }
