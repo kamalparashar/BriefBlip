@@ -1,77 +1,83 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import conf from "../conf/conf";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useState } from "react"
+import {Input, Button} from "./index.js"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { useForm } from "react-hook-form"
 import parse from "html-react-parser"
+import startFetchGetSummary from "../graphql/functionCall"
 
 function Summary() {
-  const user = useSelector((state) => state.auth.status);
-  const [url, setUrl] = useState("");
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { register, handleSubmit, reset} = useForm()
+  const user = useSelector((state) => state.auth.status)
+  // const [url, setUrl] = useState("")
+  const [data, setData] = useState({})
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+  const getSummary = async (event) => {
     if (!user) {
-      navigate("/login");
-      return;
+      navigate("/login")
     }
     try {
-      setData([])
-      const response = await axios.post(conf.n8n_url, {youtubeUrl:url})
-      setData(response.data.output)
-      console.log("Workflow triggered:", response.data);
+      setLoading(true)
+      const res = await startFetchGetSummary(event.url)
+      setData(res)
+
     } catch (error) {
-      console.error("Error triggering workflow:", error);
-    }finally{
-      setLoading(false)
+      console.log("Error in Fetching Summary :: ", error)
+      throw error
     }
-  };
+    finally{
+      setLoading(false)
+      reset({
+        url:""
+      })
+    }
+  }
+
 
   return (
     <>
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-[80%] mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8">
           Get Video Summary
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(getSummary)} className="space-y-4">
           <div>
-            <label
-              htmlFor="url"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
-              YouTube URL
-            </label>
-            <input
+            <Input
+              label="YouTube URL"
               type="url"
-              id="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=..."
+              {...register("url", {
+                required: true,
+              })}
               className="w-full px-4 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-blue-500 focus:border-blue-500"
-              required
             />
           </div>
 
-          <button
+          <Button
             type="submit"
             className="w-full py-2 px-4 rounded-md transition-colors bg-blue-500 hover:bg-blue-600 text-white"
-          >
-            Generate Summary
-          </button>
+            children= "Generate Summary"
+          />
         </form>
-        {loading?(<div className="text-2xl font-bold text-center m-20">Loading...</div>):
-        <div className="prose max-w-none p-4">
-          <h1 className="text-3xl font-bold mb-6 text-white">Video Summary :</h1>
-          <h1 className="text-2xl font-bold mb-4 text-white text-center">{data.title}</h1>
-          {data.summary ? (
-            <div className="whitespace-pre-line text-white">{parse(data.summary)}</div>
-          ) : null}
-        </div>
-        }
+        {loading ? (
+          <div className="text-2xl font-bold text-center m-20">Loading...</div>
+        ) : (
+          <div className="prose max-w-none p-4">
+            <h1 className="text-3xl font-bold mb-6 text-white">
+              Video Summary :
+            </h1>
+            <h1 className="text-2xl font-bold mb-4 text-white text-center">
+              {data.title}
+            </h1>
+            {data.summary ? (
+              <div className="whitespace-pre-line text-white">
+                {parse(data.summary)}
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
     </>
   );

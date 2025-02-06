@@ -8,6 +8,7 @@ import { Provider } from "react-redux"
 import store from "./store/store.js"
 import {Login, Signup, Landing, Summary} from "./components/index.js"
 
+
 const router = createBrowserRouter([
   {
     path: "/",
