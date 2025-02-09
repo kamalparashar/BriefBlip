@@ -1,4 +1,4 @@
-import conf from '../../src/conf/conf.js'
+import conf from '../src/conf/conf.js'
 const fetch = require('node-fetch')
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
