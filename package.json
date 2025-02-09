@@ -12,6 +12,7 @@
   "dependencies": {
     "@nhost/react": "^3.9.0",
     "@reduxjs/toolkit": "^2.5.0",
+    "fetch-blob": "^4.0.0",
     "html-react-parser": "^5.2.2",
     "node-fetch": "^3.3.2",
     "react": "^18.3.1",
