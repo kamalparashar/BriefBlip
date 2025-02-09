@@ -1,26 +1,21 @@
-import fetch from 'node-fetch'
+import axios from 'axios'
 
 const hasura_secret = process.env.VITE_HASURA_SECRET
 const hasura_url = process.env.VITE_HASURA_URL
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
-    const result = await fetch(
-      hasura_url,
-      {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'x-hasura-admin-secret': hasura_secret
-        },
-        body: JSON.stringify({
-          query: operationsDoc,
-          variables: variables,
-          operationName: operationName
-        })
+    const result = await axios.post(conf.hasura_url, {
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': conf.hasura_secret,
       }
-    )
+    })
 
-    return await result.json()
+    return result.data
   }
   
   const operationsDoc = `
