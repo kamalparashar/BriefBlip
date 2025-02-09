@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import parse from "html-react-parser"
-import startFetchGetSummary from "../graphql/functionCall"
+// import startFetchGetSummary from "../graphql/functionCall"
 
 function Summary() {
   const { register, handleSubmit, reset} = useForm()
@@ -21,7 +21,7 @@ function Summary() {
     try {
       setLoading(true)
       // const res = await startFetchGetSummary(event.url)
-      const res = await fetch()
+      const res = await fetch(`https://briefblip.netlify.app/.netlify/functions/fetchData?youtubeUrl=${encodeURIComponent(event.url)}`)
       setData(res)
 
     } catch (error) {
@@ -66,7 +66,7 @@ function Summary() {
           <div className="text-2xl font-bold text-center m-20">Loading...</div>
         ) : (
           <div className="prose max-w-none p-4">
-            <h1 className="text-3xl font-bold mb-6 text-white">
+            <h1 className="text-3xl font-bold my-6 text-white">
               Video Summary :
             </h1>
             <h1 className="text-2xl font-bold mb-4 text-white text-center">
