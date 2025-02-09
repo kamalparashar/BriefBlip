@@ -20,7 +20,8 @@ function Summary() {
     }
     try {
       setLoading(true)
-      const res = await startFetchGetSummary(event.url)
+      // const res = await startFetchGetSummary(event.url)
+      const res = await fetch()
       setData(res)
 
     } catch (error) {
