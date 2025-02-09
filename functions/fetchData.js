@@ -1,14 +1,16 @@
-import conf from '../src/conf/conf.js'
+// import conf from '../src/conf/conf.js'
 const fetch = require('node-fetch')
+const hasura_secret = process.env.VITE_HASURA_SECRET
+const hasura_url = process.env.VITE_HASURA_URL
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
     const result = await fetch(
-      conf.hasura_url,
+      hasura_url,
       {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
-          'x-hasura-admin-secret': conf.hasura_secret
+          'x-hasura-admin-secret': hasura_secret
         },
         body: JSON.stringify({
           query: operationsDoc,
