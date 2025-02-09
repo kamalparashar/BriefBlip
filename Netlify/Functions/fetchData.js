@@ -1,4 +1,5 @@
-import conf from "../conf/conf"
+import conf from '../../src/conf/conf.js'
+const fetch = require('node-fetch')
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
     const result = await fetch(
@@ -47,5 +48,21 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
   
     return data.getsummary
   }
-  
-export default startFetchGetSummary
+
+exports.handler = async (event, context) => {
+  try {
+    const youtubeUrl = event.queryStingParameters.youtubeUrl
+    const response = await startFetchGetSummary(youtubeUrl); // Replace with your API URL
+    const data = await response.json();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Failed to fetch data' }),
+    };
+  }
+};
