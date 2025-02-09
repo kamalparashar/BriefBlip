@@ -4,12 +4,10 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import parse from "html-react-parser"
-// import startFetchGetSummary from "../graphql/functionCall"
 
 function Summary() {
   const { register, handleSubmit, reset} = useForm()
   const user = useSelector((state) => state.auth.status)
-  // const [url, setUrl] = useState("")
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -20,10 +18,8 @@ function Summary() {
     }
     try {
       setLoading(true)
-      // const res = await startFetchGetSummary(event.url)
       const res = await fetch(`https://briefblip.netlify.app/.netlify/functions/fetchData?youtubeUrl=${encodeURIComponent(event.url)}`)
       setData(res)
-
     } catch (error) {
       console.log("Error in Fetching Summary :: ", error)
       throw error

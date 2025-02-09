@@ -1,5 +1,5 @@
-// import conf from '../src/conf/conf.js'
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
+
 const hasura_secret = process.env.VITE_HASURA_SECRET
 const hasura_url = process.env.VITE_HASURA_URL
 
@@ -54,17 +54,17 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 exports.handler = async (event, context) => {
   try {
     const youtubeUrl = event.queryStingParameters.youtubeUrl
-    const response = await startFetchGetSummary(youtubeUrl); // Replace with your API URL
-    const data = await response.json();
+    const response = await startFetchGetSummary(youtubeUrl)
+    const data = await response.json()
 
     return {
       statusCode: 200,
       body: JSON.stringify(data),
-    };
+    }
   } catch (error) {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Failed to fetch data' }),
-    };
+    }
   }
-};
+}
