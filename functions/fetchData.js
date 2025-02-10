@@ -14,6 +14,7 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
         'x-hasura-admin-secret': hasura_secret,
       }
     })
+    console.log(result)
     return result.data
   }
   
