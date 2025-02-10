@@ -49,7 +49,7 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 
 exports.handler = async (event, context) => {
   try {
-    const youtubeUrl = event.queryStingParameters.youtubeUrl
+    const youtubeUrl = event.queryStringParameters.youtubeUrl
     const response = await startFetchGetSummary(youtubeUrl)
     const data = await response.json()
 
