@@ -4,18 +4,16 @@ const hasura_secret = process.env.VITE_HASURA_SECRET
 const hasura_url = process.env.VITE_HASURA_URL
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
-  console.log(hasura_secret, hasura_url)
-    const result = await axios.post(conf.hasura_url, {
+    const result = await axios.post(hasura_url, {
       query: operationsDoc,
       variables: variables,
       operationName: operationName,
     }, {
       headers: {
         'Content-Type': 'application/json',
-        'x-hasura-admin-secret': conf.hasura_secret,
+        'x-hasura-admin-secret': hasura_secret,
       }
     })
-    console.log(result)
     return result.data
   }
   
