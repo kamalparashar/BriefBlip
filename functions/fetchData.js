@@ -4,6 +4,8 @@ const hasura_secret = process.env.VITE_HASURA_SECRET
 const hasura_url = process.env.VITE_HASURA_URL
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
+  console.log(hasura_secret?'hava a secret':'did not have any secret')
+  console.log(hasura_url)
     const result = await axios.post(hasura_url, {
       query: operationsDoc,
       variables: variables,
@@ -12,7 +14,8 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
       headers: {
         'Content-Type': 'application/json',
         'x-hasura-admin-secret': hasura_secret,
-      }
+      },
+      timeout: 60000,
     })
     console.log(result)
     return result.data
@@ -28,6 +31,7 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 `;
   
   function fetchGetSummary(youtubeUrl) {
+    console.log(youtubeUrl)
     return fetchGraphQL(
       operationsDoc,
       "MyQuery",
@@ -49,6 +53,7 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 exports.handler = async (event, context) => {
   try {
     const youtubeUrl = event.queryStringParameters.youtubeUrl
+    console.log(youtubeUrl)
     const response = await startFetchGetSummary(youtubeUrl)
     const data = await response.json()
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import parse from "html-react-parser"
+import axios from 'axios'
 
 function Summary() {
   const { register, handleSubmit, reset} = useForm()
@@ -14,21 +15,20 @@ function Summary() {
 
   const getSummary = async (event) => {
     if (!user) {
-      navigate("/login")
+      navigate("/login");
     }
     try {
-      setLoading(true)
-      const res = await fetch(`https://briefblip.netlify.app/.netlify/functions/fetchData?youtubeUrl=${encodeURIComponent(event.url)}`)
-      setData(res)
+      setLoading(true);
+      const res = await axios.get(`https://briefblip.netlify.app/.netlify/functions/fetchData?youtubeUrl=${encodeURIComponent(event.url)}`);
+      setData(res.data);
     } catch (error) {
-      console.log("Error in Fetching Summary :: ", error)
-      throw error
-    }
-    finally{
-      setLoading(false)
+      console.log("Error in Fetching Summary :: ", error);
+      throw error;
+    } finally {
+      setLoading(false);
       reset({
-        url:""
-      })
+        url: ""
+      });
     }
   }
 
