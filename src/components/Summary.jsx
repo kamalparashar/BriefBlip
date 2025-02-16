@@ -19,7 +19,7 @@ function Summary() {
     }
     try {
       setLoading(true);
-      const res = await axios.get(`https://briefblip-backend.onrender.com?youtubeUrl=${encodeURIComponent(event.url)}`);
+      const res = await axios.get(`https://briefblip-backend.onrender.com/getsummary?youtubeUrl=${encodeURIComponent(event.url)}`);
       setData(res.data);
     } catch (error) {
       console.log("Error in Fetching Summary :: ", error);
