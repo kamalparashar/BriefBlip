@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import parse from "html-react-parser"
-import axios from 'axios'
-import conf from "../conf/conf.js"
+import startFetchGetSummary from "../graphql/functioncall.js"
 
 function Summary() {
   const { register, handleSubmit, reset} = useForm()
@@ -20,8 +19,9 @@ function Summary() {
     }
     try {
       setLoading(true);
-      const res = await axios.get(`${conf.backend_url}/getsummary?youtubeUrl=${encodeURIComponent(event.url)}`);
-      setData(res.data);
+      const res = await startFetchGetSummary(event.url)
+      setData(res);
+      
     } catch (error) {
       console.log("Error in Fetching Summary :: ", error);
       throw error;
