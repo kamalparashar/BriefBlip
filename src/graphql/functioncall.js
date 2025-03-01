@@ -1,4 +1,5 @@
 import conf from "../conf/conf"
+import axios from 'axios'
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
     try {
